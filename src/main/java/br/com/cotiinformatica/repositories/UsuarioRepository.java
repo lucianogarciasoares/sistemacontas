@@ -13,21 +13,30 @@ import br.com.cotiinformatica.entities.Usuario;
 
 public class UsuarioRepository {
 	private JdbcTemplate jdbcTemplate;
-	
+
 	public UsuarioRepository(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	public void create(Usuario usuario) throws Exception{
+
+	public void create(Usuario usuario) throws Exception {
 		String query = "insert into usuario (nome, email, senha) values(?,?, md5(?))";
-		Object[] params = {usuario.getNome(), usuario.getEmail(), usuario.getSenha()};
-		
+		Object[] params = { usuario.getNome(), usuario.getEmail(), usuario.getSenha() };
+
 		jdbcTemplate.update(query, params);
 	}
-	public Usuario findByEmail(String email)throws Exception{
-		
+
+	public void update(Integer idUsuario, String novaSenha)throws Exception {
+
+		String query = "update usuario set senha = md5(?) where idusuario = ?";
+		Object[] params = { novaSenha, idUsuario };
+		jdbcTemplate.update(query, params);
+	}
+
+	public Usuario findByEmail(String email) throws Exception {
+
 		String query = "select * from usuario where email=?";
 		Object[] params = { email };
-		
+
 		List<Usuario> lista = jdbcTemplate.query(query, params, new RowMapper<Usuario>() {
 
 			@Override
@@ -38,7 +47,30 @@ public class UsuarioRepository {
 				usuario.setEmail(rs.getString("email"));
 				usuario.setSenha(rs.getString("senha"));
 				return usuario;
-			}			
+			}
+		});
+		if (lista.size() == 1)
+			return lista.get(0);
+		else
+			return null;
+	}
+
+	public Usuario findByEmailAndSenha(String email, String senha) throws Exception {
+
+		String query = "select * from usuario where email=? and senha = md5(?)";
+		Object[] params = { email, senha };
+
+		List<Usuario> lista = jdbcTemplate.query(query, params, new RowMapper<Usuario>() {
+
+			@Override
+			public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Usuario usuario = new Usuario();
+				usuario.setIdUsuario(rs.getInt("idusuario"));
+				usuario.setNome(rs.getString("nome"));
+				usuario.setEmail(rs.getString("email"));
+				usuario.setSenha(rs.getString("senha"));
+				return usuario;
+			}
 		});
 		if (lista.size() == 1)
 			return lista.get(0);
