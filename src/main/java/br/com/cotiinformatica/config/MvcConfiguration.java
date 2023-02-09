@@ -32,10 +32,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
-	/*
-	 * método para configurar o DATA SOURCE do projeto, ou seja,
-	 * a conexão com o bando de dacos utilizado pelo projeto.
-	 */
+	
 	@Bean
 	public DataSource getDataSource() {
 		
@@ -48,10 +45,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter{
 		
 		return dataSource;
 	}
-	/*
-	 * Configuração para que a classe UsuarioRepository
-	 * possa receber o DataSource do projeto(conexão com o bando de dados).
-	 */
+	
 	@Bean
 	public UsuarioRepository getUsuarioRepository() {
 		return new UsuarioRepository(getDataSource());

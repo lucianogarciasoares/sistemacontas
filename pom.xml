@@ -91,7 +91,14 @@
     		<groupId>com.github.javafaker</groupId>
     		<artifactId>javafaker</artifactId>
     		<version>1.0.2</version>
-		</dependency>		
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+		<dependency>
+    		<groupId>javax.servlet</groupId>
+    		<artifactId>jstl</artifactId>
+    		<version>1.2</version>
+		</dependency>
+		
 	</dependencies>
 
 	<repositories>
