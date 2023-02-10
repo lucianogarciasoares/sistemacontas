@@ -125,4 +125,18 @@ public class ContaRepository {
 		else
 			return null;
 	}
+	
+	public Double sumByUsuarioAndData(Integer idUsuario, Date dataIni, Date dataFim, Integer tipo) throws Exception{
+		
+		String query = "select sum(valor)from conta where idusuario=? and data between ? and ? and tipo = ?";
+		
+		Object[] params = {
+				idUsuario,
+				java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(dataIni)),
+				java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(dataFim)),
+				tipo
+		};
+		
+		return jdbcTemplate.queryForObject(query, params, Double.class);
+	}
 }

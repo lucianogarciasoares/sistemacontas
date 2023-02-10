@@ -82,7 +82,7 @@
 										<a href="/sistemacontas/admin/edicao-contas?id=${conta.idConta}" class="btn btn-primary btn-sm">
 											Editar
 										</a>
-										<a href="/sistemacontas/admin/exclusao-contas?id=${conta.idConta}" onclick="return confirm('Deseja realmente excluid a conta?\n ${conta.nome}'); " class="btn btn-danger btn-sm">
+										<a href="/sistemacontas/admin/exclusao-contas?id=${conta.idConta}" onclick="return confirm('Deseja realmente excluir a conta?\n ${conta.nome}'); " class="btn btn-danger btn-sm">
 											Excluir
 										</a>
 									</td>
