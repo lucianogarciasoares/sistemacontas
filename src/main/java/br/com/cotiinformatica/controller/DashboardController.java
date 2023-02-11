@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cotiinformatica.dtos.UsuarioDTO;
@@ -36,9 +37,32 @@ public class DashboardController {
 			
 			modelAndView.addObject("model", model);
 			modelAndView.addObject("total_contas_receber", contaRepository.sumByUsuarioAndData(usuarioDto.getIdUsuario(), dataIni, dataFim, 1));
-			//modelAndView.addObject()
+			modelAndView.addObject("total_contas_pagar", contaRepository.sumByUsuarioAndData(usuarioDto.getIdUsuario(), dataIni, dataFim, 2));
+		
 		}catch(Exception e) {
 			modelAndView.addObject("mensagem", " Falha ao carregar dashboard !!" + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/admin/filtrar-dashboard", method = RequestMethod.POST)
+	public ModelAndView filtrarDashboard(ConsultaContasModel model, HttpServletRequest request) {
+		 ModelAndView modelAndView = new ModelAndView("/admin/dashboard");
+		try {
+			UsuarioDTO usuarioDto = (UsuarioDTO) request.getSession().getAttribute("usuario");
+			Date dataIni = new SimpleDateFormat("yyyy-MM-dd").parse(model.getDataIni());
+			Date dataFim = new SimpleDateFormat("yyyy-MM-dd").parse(model.getDataFim());
+			
+			modelAndView.addObject("model", model);
+			modelAndView.addObject("total_contas_receber", contaRepository.sumByUsuarioAndData(usuarioDto.getIdUsuario(), dataIni, dataFim, 1));
+			modelAndView.addObject("total_contas_pagar", contaRepository.sumByUsuarioAndData(usuarioDto.getIdUsuario(), dataIni, dataFim, 2));
+			
+		}catch (Exception e) {
+			
+			modelAndView.addObject("mensagem", "Falha ao carregar dashboard !!" + e.getMessage());
 		}
 		
 		return modelAndView;
